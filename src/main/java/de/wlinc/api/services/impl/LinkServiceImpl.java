@@ -1,5 +1,6 @@
 package de.wlinc.api.services.impl;
 
+import de.wlinc.api.ApiApplication;
 import de.wlinc.api.entity.Link;
 import de.wlinc.api.repositories.LinkRepository;
 import de.wlinc.api.services.LinkService;
@@ -47,6 +48,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Link createLink(Jwt jwt, Link link) {
+        ApiApplication.posthog.capture("link_created", String.valueOf(link));
         permissionChecker.hasUserOneOfRoles(jwt, new String[]{"create_links"});
         return linkRepository.save(link);
     }
