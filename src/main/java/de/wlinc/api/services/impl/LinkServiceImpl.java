@@ -3,6 +3,7 @@ package de.wlinc.api.services.impl;
 import de.wlinc.api.entity.Link;
 import de.wlinc.api.repositories.LinkRepository;
 import de.wlinc.api.services.LinkService;
+import de.wlinc.api.util.PermissionChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 public class LinkServiceImpl implements LinkService {
 
     final LinkRepository linkRepository;
+    final PermissionChecker permissionChecker;
 
     @Override
     public List<Link> getAllLinks(Jwt jwt) {
@@ -45,6 +47,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Link createLink(Jwt jwt, Link link) {
+        permissionChecker.hasUserOneOfRoles(jwt, new String[]{"create_links"});
         return linkRepository.save(link);
     }
 

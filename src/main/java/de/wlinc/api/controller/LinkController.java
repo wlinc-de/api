@@ -5,7 +5,6 @@ import de.wlinc.api.services.impl.LinkServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -27,7 +26,7 @@ public class LinkController {
     }
 
     @PostMapping
-    public Link createLink(@AuthenticationPrincipal Jwt jwt, Link link) {
+    public Link createLink(@AuthenticationPrincipal Jwt jwt,@RequestBody Link link) {
         return linkService.createLink(jwt, link);
     }
 
