@@ -11,3 +11,27 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  keycloak:
+    image: keycloak.local
+    build:
+      context: .
+      dockerfile: keycloak-Dockerfile
+    ports:
+      - 8081:8080
+    environment:
+        - KEYCLOAK_ADMIN=admin
+        - KEYCLOAK_ADMIN_PASSWORD=admin
+        - DB_VENDOR=postgres
+        - DB_ADDR=postgres
+        - DB_DATABASE=kc
+        - DB_USER=kc
+        - DB_PASSWORD=kc
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11
+    environment:
+      - POSTGRES_USER=kc
+      - POSTGRES_PASSWORD=kc
+      - POSTGRES_DB=kc

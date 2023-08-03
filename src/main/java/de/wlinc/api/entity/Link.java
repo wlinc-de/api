@@ -1,8 +1,7 @@
 package de.wlinc.api.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Table
 @Entity
