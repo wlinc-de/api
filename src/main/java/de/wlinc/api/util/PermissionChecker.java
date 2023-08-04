@@ -16,7 +16,7 @@ public class PermissionChecker {
         if(roles.contains("admin")){
             return;
         }
-        if (roles.stream().anyMatch(role -> {
+        if (roles.stream().noneMatch(role -> {
             for (var permissionRole : roleNames) {
                 if (permissionRole.equals(role)) {
                     return true;
@@ -24,8 +24,17 @@ public class PermissionChecker {
             }
             return false;
         })) {
-        } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Permission denied. You don't have the required role(s): " + Arrays.toString(roleNames));
         }
+    }
+    public void isUserSelfOrAdmin(Jwt jwt, String user){
+        var roles = (JSONArray) jwt.getClaimAsMap("realm_access").get("roles");
+        if(roles.contains("admin")){
+            return;
+        }
+        if(jwt.getSubject().equals(user)){
+            return;
+        }
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Permission denied. Ether this resource does not exist or you are not allowed to access this resource.");
     }
 }

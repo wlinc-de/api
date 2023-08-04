@@ -3,6 +3,8 @@ package de.wlinc.api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Table
 @Entity
 @Setter
@@ -17,4 +19,7 @@ public class Link {
     private String domain = "wlinc.de";
     private String token;
     private String user;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUsedAt;
+    private LocalDateTime expiresAt;
 }

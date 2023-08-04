@@ -5,9 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LinkRepository extends CrudRepository<Link, Long> {
     List<Link> getLinksByUser(String user);
-    Link getLinkByToken(String token);
+    Optional<Link> getLinkByToken(String token);
 }
