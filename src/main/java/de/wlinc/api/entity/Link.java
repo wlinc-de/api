@@ -19,6 +19,7 @@ public class Link {
     private String domain = "wlinc.de";
     private String token;
     private String user;
+    private String type = "link";
     private LocalDateTime createdAt;
     private LocalDateTime lastUsedAt;
     private LocalDateTime expiresAt;

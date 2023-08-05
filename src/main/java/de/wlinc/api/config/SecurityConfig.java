@@ -30,7 +30,8 @@ public class SecurityConfig {
                     });
                 })
                 .authorizeHttpRequests(reg -> {
-                    //reg.requestMatchers("/link").permitAll();
+                    reg.requestMatchers(HttpMethod.GET, "/link**/**").permitAll();
+                    reg.requestMatchers(HttpMethod.GET, "/file**/**").permitAll();
                     reg.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll();
                     reg.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
                     reg.requestMatchers("/error").permitAll();
