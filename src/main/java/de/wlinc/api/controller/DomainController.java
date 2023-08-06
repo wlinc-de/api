@@ -1,7 +1,6 @@
 package de.wlinc.api.controller;
 
 import de.wlinc.api.entity.Domain;
-import de.wlinc.api.services.DomainService;
 import de.wlinc.api.services.impl.DomainServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
