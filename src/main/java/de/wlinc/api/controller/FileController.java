@@ -32,7 +32,7 @@ public class FileController {
     @ApiResponse(responseCode = "200", description = "Found the file")
     @ApiResponse(responseCode = "204", description = "File not found")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
-    @GetMapping("/hash/{hashName}")
+    @GetMapping("/{hashName}")
     public File getFileByHash(@AuthenticationPrincipal Jwt jwt, @PathVariable String hashName) {
         return fileService.getFileByHash(jwt, hashName);
     }
@@ -41,7 +41,7 @@ public class FileController {
     @ApiResponse(responseCode = "200", description = "Found the files")
     @ApiResponse(responseCode = "204", description = "File not found")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
-    @GetMapping("/user/{user}")
+    @GetMapping("/{user}")
     public List<File> getFilesByUser(@AuthenticationPrincipal Jwt jwt, @PathVariable String user) {
         return fileService.getFilesByUser(jwt, user);
     }

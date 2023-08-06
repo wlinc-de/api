@@ -67,5 +67,25 @@ public class LinkController {
         return linkService.getLinkById(jwt, id);
     }
 
+    @Operation(summary = "Edit a link", description = "Edit a link, only accessible by the user or an admin")
+    @ApiResponse(responseCode = "200", description = "Edited the link")
+    @ApiResponse(responseCode = "204", description = "Link not found or no access", content = @io.swagger.v3.oas.annotations.media.Content)
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
+    @ApiResponse(responseCode = "403", description = "No Access", content = @io.swagger.v3.oas.annotations.media.Content)
+    @PutMapping
+    public Link updateLink(@AuthenticationPrincipal Jwt jwt, @RequestBody Link link) {
+        return linkService.updateLink(jwt, link);
+    }
+
+    @Operation(summary = "Delete a link", description = "Delete a link, only accessible by the user or an admin")
+    @ApiResponse(responseCode = "200", description = "Deleted the link")
+    @ApiResponse(responseCode = "204", description = "Link not found or no access", content = @io.swagger.v3.oas.annotations.media.Content)
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
+    @ApiResponse(responseCode = "403", description = "No Access", content = @io.swagger.v3.oas.annotations.media.Content)
+    @DeleteMapping("/{id}")
+    public void deleteLink(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id) {
+        linkService.deleteLink(jwt, id);
+    }
+
 }
 

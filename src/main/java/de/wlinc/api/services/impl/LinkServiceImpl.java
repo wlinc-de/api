@@ -87,12 +87,30 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Link updateLink(Jwt jwt, Link link) {
-        return null;
+        var oldLink = linkRepository.findById(link.getId());
+        if(oldLink.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Ether the link does not exist or you are not allowed to access it");
+        }
+        permissionChecker.isUserSelfOrAdmin(jwt, link.getUser());
+        oldLink.get().setUrl(link.getUrl());
+        oldLink.get().setToken(link.getToken());
+        oldLink.get().setLastUsedAt(null);
+        oldLink.get().setUpdatedAt(LocalDateTime.now());
+        oldLink.get().setExpiresAt(link.getExpiresAt());
+        oldLink.get().setDomain(link.getDomain());
+        oldLink.get().setType(link.getType());
+        oldLink.get().setUser(link.getUser());
+        return linkRepository.save(oldLink.get());
     }
 
     @Override
     public void deleteLink(Jwt jwt, Long id) {
-
+        var link = linkRepository.findById(id);
+        if(link.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Ether the link does not exist or you are not allowed to access it");
+        }
+        permissionChecker.isUserSelfOrAdmin(jwt, link.get().getUser());
+        linkRepository.deleteById(id);
     }
 
     private String generateToken() {

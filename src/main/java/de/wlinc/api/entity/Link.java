@@ -21,6 +21,7 @@ public class Link {
     private String user;
     private String type = "link";
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime lastUsedAt;
     private LocalDateTime expiresAt;
 }
