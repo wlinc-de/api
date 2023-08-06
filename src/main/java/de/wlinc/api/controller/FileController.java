@@ -1,5 +1,6 @@
 package de.wlinc.api.controller;
 
+import de.wlinc.api.entity.File;
 import de.wlinc.api.services.impl.FileServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/file")
@@ -21,8 +24,8 @@ public class FileController {
     @ApiResponse(responseCode = "200", description = "Created the file")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
     @PostMapping
-    public void uploadFile(@AuthenticationPrincipal Jwt jwt, @RequestBody MultipartFile file) {
-        fileService.uploadFile(jwt, file);
+    public File uploadFile(@AuthenticationPrincipal Jwt jwt, @RequestBody MultipartFile file) {
+        return fileService.uploadFile(jwt, file);
     }
 
     @Operation(summary = "Get file by hash", description = "Get a file by its hash, only accessible by the user or an admin")
@@ -30,8 +33,8 @@ public class FileController {
     @ApiResponse(responseCode = "204", description = "File not found")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
     @GetMapping("/hash/{hashName}")
-    public void getFileByHash(@AuthenticationPrincipal Jwt jwt, @PathVariable String hashName) {
-        fileService.getFileByHash(jwt, hashName);
+    public File getFileByHash(@AuthenticationPrincipal Jwt jwt, @PathVariable String hashName) {
+        return fileService.getFileByHash(jwt, hashName);
     }
 
     @Operation(summary = "Get file by user", description = "Get a file by its user, only accessible by the user or an admin")
@@ -39,16 +42,16 @@ public class FileController {
     @ApiResponse(responseCode = "204", description = "File not found")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
     @GetMapping("/user/{user}")
-    public void getFilesByUser(@AuthenticationPrincipal Jwt jwt, @PathVariable String user) {
-        fileService.getFilesByUser(jwt, user);
+    public List<File> getFilesByUser(@AuthenticationPrincipal Jwt jwt, @PathVariable String user) {
+        return fileService.getFilesByUser(jwt, user);
     }
 
     @Operation(summary = "Get file by link token", description = "Get a file by its link token, only accessible by anyone")
     @ApiResponse(responseCode = "200", description = "Found the file")
     @ApiResponse(responseCode = "204", description = "File not found")
     @GetMapping
-    public void getFileByLinkToken(@Param("token") String token) {
-        fileService.getFileByLinkToken(token);
+    public File getFileByLinkToken(@Param("token") String token) {
+        return fileService.getFileByLinkToken(token);
     }
 
     @Operation(summary = "Delete file", description = "Delete a file, only accessible by the user or an admin")

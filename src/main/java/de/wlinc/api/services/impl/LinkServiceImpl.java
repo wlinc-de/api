@@ -48,7 +48,8 @@ public class LinkServiceImpl implements LinkService {
     public Link getLinkByToken(Jwt jwt, String token) {
         var link = linkRepository.getLinkByToken(token);
         if (link.isPresent()) {
-            return link.get();
+            link.get().setLastUsedAt(LocalDateTime.now());
+            return linkRepository.save(link.get());
         }else {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Link not found");
         }

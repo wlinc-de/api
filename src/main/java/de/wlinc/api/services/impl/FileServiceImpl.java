@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -58,6 +59,8 @@ public class FileServiceImpl implements FileService {
         file.setUUID(uuid.toString());
         file.setPath(destination.toString());
 
+        file.setExtension(Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+
         handleUpload(multipartFile, destination);
 
 
@@ -70,7 +73,7 @@ public class FileServiceImpl implements FileService {
         }
         Link link = new Link();
         link.setType("file");
-        link.setUrl(link.getDomain() + viewPath + "/" + file.getHash());
+        link.setUrl(link.getDomain() + viewPath + "/" + file.getHash() + file.getExtension());
 
         var savedLink = linkService.createLink(jwt, link);
         file.setLink(savedLink);
@@ -83,7 +86,9 @@ public class FileServiceImpl implements FileService {
         var file = fileRepository.getFileByHash(hashName);
         if(file.isPresent()) {
             permissionChecker.isUserSelfOrAdmin(jwt, file.get().getUser());
-            return file.get();
+            file.get().setLast_used_at(LocalDateTime.now());
+            return fileRepository.save(file.get());
+
         }else {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Ether the file is not found or you have no access to it.");
         }
@@ -100,7 +105,8 @@ public class FileServiceImpl implements FileService {
     public File getFileByLinkToken(String token) {
         var file = fileRepository.getFileByLinkToken(token);
         if(file.isPresent()) {
-            return file.get();
+            file.get().setLast_used_at(LocalDateTime.now());
+            return fileRepository.save(file.get());
         }else {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Ether the file is not found or you have no access to it.");
         }
