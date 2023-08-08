@@ -43,7 +43,7 @@ public class LinkController {
     @ApiResponse(responseCode = "204", description = "Link not found")
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @io.swagger.v3.oas.annotations.media.Content)
     @GetMapping
-    public Link getLinkByToken(@AuthenticationPrincipal Jwt jwt,@Param(value = "token") String token) {
+    public Link getLinkByToken(@AuthenticationPrincipal Jwt jwt, @Param(value = "token") String token) {
         return linkService.getLinkByToken(jwt, token);
     }
 
