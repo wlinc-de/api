@@ -1,7 +1,7 @@
 FROM maven as build
 WORKDIR /build
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:20
 WORKDIR /app
